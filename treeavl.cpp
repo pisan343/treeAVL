@@ -26,7 +26,7 @@ ostream &operator<<(ostream &out, const Node *np) {
 
 ostream &operator<<(ostream &out, const TreeAVL &tp) {
   //   return out << tp.to_string();
-  printSideways(out, tp.root, 0);
+  printSideways(out, tp.root);
   return out;
 }
 
@@ -80,29 +80,42 @@ void TreeAVL::insert(int value) {
 
 void TreeAVL::fixParentHeights(Node *curr) {
   while (curr->parent != nullptr) {
-    Node *theParent = curr->parent;
-    int leftHeight = height(theParent->left);
-    int rightHeight = height(theParent->right);
-    theParent->height = 1 + max(leftHeight, rightHeight);
+    Node *p = curr->parent;
+    int leftHeight = p->left == nullptr ? 0 : p->left->height;
+    int rightHeight = p->right == nullptr ? 0 : p->right->height;
+    p->height = 1 + max(leftHeight, rightHeight);
     if (abs(leftHeight - rightHeight) > 1) {
-      fixUnbalancedNode(theParent);
+      cout << "Unbalanced node: " << p << leftHeight << " - " << rightHeight
+           << endl;
+      fixUnbalancedNode(p);
     }
-    curr = theParent;
+    curr = p;
   }
 }
 
 bool TreeAVL::rightHeavy(Node *curr) {
-  assert(curr != nullptr);
-  return height(curr->right) - height(curr->left) > 0;
+  if (curr == nullptr) {
+    return false;
+  }
+  int leftHeight = curr->left == nullptr ? 0 : curr->left->height;
+  int rightHeight = curr->right == nullptr ? 0 : curr->right->height;
+  return rightHeight - leftHeight;
 }
 
 bool TreeAVL::leftHeavy(Node *curr) {
-  assert(curr != nullptr);
-  return height(curr->left) - height(curr->right) > 0;
+  if (curr == nullptr) {
+    return false;
+  }
+  int leftHeight = curr->left == nullptr ? 0 : curr->left->height;
+  int rightHeight = curr->right == nullptr ? 0 : curr->right->height;
+  return leftHeight - rightHeight;
 }
 
 int TreeAVL::height(Node *curr) const {
-  return (curr == nullptr) ? 0 : curr->height;
+  if (curr == nullptr) {
+    return 0;
+  }
+  return curr->height;
 }
 
 void TreeAVL::rotateLeft(Node *curr) {
@@ -157,28 +170,14 @@ void TreeAVL::rotateRight(Node *curr) {
     }
   }
 }
-
-void TreeAVL::rotateLeftRight(Node *curr) {
-  rotateLeft(curr->left);
-  rotateRight(curr);
-}
-
-void TreeAVL::rotateRightLeft(Node *curr) {
-  rotateRight(curr->right);
-  rotateLeft(curr);
-}
-
 void TreeAVL::fixUnbalancedNode(Node *curr) {
   // right-right heavy
   if (rightHeavy(curr) && rightHeavy(curr->right)) {
     rotateLeft(curr);
   } else if (leftHeavy(curr) && leftHeavy(curr->left)) {
     rotateRight(curr);
-  } else if (leftHeavy(curr) && rightHeavy(curr->left)) {
-    rotateLeftRight(curr);
   } else {
-    assert(rightHeavy(curr) && leftHeavy(curr->right));
-    rotateRightLeft(curr);
+    assert(1 == 2 && "Not Yet Implemented");
   }
 }
 
