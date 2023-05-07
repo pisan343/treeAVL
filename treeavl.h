@@ -8,7 +8,7 @@ class Node {
   friend class TreeAVL;
   // print a Node*
   friend ostream &operator<<(ostream &out, const Node *np);
-  friend ostream &printSideways(ostream &out, const Node *curr, int level = 0);
+  friend ostream &printSideways(ostream &out, const Node *curr, int level);
 
 private:
   int value;
@@ -33,6 +33,8 @@ private:
   void fixUnbalancedNode(Node *curr);
   void rotateLeft(Node *curr);
   void rotateRight(Node *curr);
+  void rotateLeftRight(Node *curr);
+  void rotateRightLeft(Node *curr);
 
   bool rightHeavy(Node *curr);
   bool leftHeavy(Node *curr);

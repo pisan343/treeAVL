@@ -30,9 +30,13 @@
 *.exe
 *.out
 *.app
+main
 
 # Mac
 Info.plist
 
 # VSCode
 .vscode/settings.json
+
+
+
