@@ -8,8 +8,10 @@
                 "-fcolor-diagnostics",
                 "-fansi-escape-codes",
                 "-g",
-                // "${file}",
-                "*.cpp",    // added to compile all cpp files
+                "*.cpp", // added to compile all cpp files
+                "-lgtest",
+                "-lgtest_main",
+                "-pthread",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],

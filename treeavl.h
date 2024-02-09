@@ -1,3 +1,6 @@
+#ifndef TREEAVL
+#define TREEAVL
+
 #include <iostream>
 
 using namespace std;
@@ -56,3 +59,5 @@ public:
   // return a string representation fo the tree useful for assert statements
   string to_string() const;
 };
+
+#endif

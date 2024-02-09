@@ -79,15 +79,14 @@ void TreeAVL::insert(int value) {
 }
 
 void TreeAVL::fixParentHeights(Node *curr) {
-  while (curr->parent != nullptr) {
-    Node *theParent = curr->parent;
-    int leftHeight = height(theParent->left);
-    int rightHeight = height(theParent->right);
-    theParent->height = 1 + max(leftHeight, rightHeight);
+  while (curr != nullptr) {
+    int leftHeight = height(curr->left);
+    int rightHeight = height(curr->right);
+    curr->height = 1 + max(leftHeight, rightHeight);
     if (abs(leftHeight - rightHeight) > 1) {
-      fixUnbalancedNode(theParent);
+      fixUnbalancedNode(curr);
     }
-    curr = theParent;
+    curr = curr->parent;
   }
 }
 
@@ -112,11 +111,15 @@ void TreeAVL::rotateLeft(Node *curr) {
   Node *rightChildsLeftChild = curr->right->left;
   curr->right = rightChildsLeftChild;
   rightChild->left = curr;
+  assert(curr->parent != rightChild);
   curr->parent = rightChild;
   if (rightChildsLeftChild != nullptr) {
     rightChildsLeftChild->parent = curr;
   }
   rightChild->parent = theParent;
+  if (theParent == nullptr) {
+    root = rightChild;
+  }
   curr->height = h + 1;
   rightChild->height = h + 2;
   if (rightChildsLeftChild != nullptr) {
@@ -143,6 +146,9 @@ void TreeAVL::rotateRight(Node *curr) {
     leftChildsRightChild->parent = curr;
   }
   leftChild->parent = theParent;
+  if (theParent == nullptr) {
+    root = leftChild;
+  }
   curr->height = h + 1;
   leftChild->height = h + 2;
   if (leftChildsRightChild != nullptr) {

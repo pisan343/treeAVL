@@ -3,6 +3,16 @@
 #include <gtest/gtest.h>
 namespace {
 
+TEST(TreeAVL, Basic102030) {
+  TreeAVL tp;
+  stringstream ss;
+
+  tp.insert(10);
+  tp.insert(20);
+  tp.insert(30);
+  EXPECT_EQ(tp.to_string(), "[[20],[10,30]]");
+}
+
 TEST(TreeAVL, Basic) {
   TreeAVL tp;
   stringstream ss;
